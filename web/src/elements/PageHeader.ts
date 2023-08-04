@@ -9,6 +9,7 @@ import {
 import { currentInterface } from "@goauthentik/common/sentry";
 import { me } from "@goauthentik/common/users";
 import { AKElement, rootInterface } from "@goauthentik/elements/Base";
+import "@patternfly/elements/pf-tooltip/pf-tooltip.js";
 
 import { msg } from "@lit/localize";
 import { CSSResult, TemplateResult, css, html } from "lit";
@@ -91,6 +92,11 @@ export class PageHeader extends AKElement {
                 .notification-trigger.has-notifications {
                     color: var(--pf-global--active-color--100);
                 }
+                h1 {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center !important;
+                }
             `,
         ];
     }
@@ -120,10 +126,10 @@ export class PageHeader extends AKElement {
     renderIcon(): TemplateResult {
         if (this.icon) {
             if (this.iconImage && !this.icon.startsWith("fa://")) {
-                return html`<img class="pf-icon" src="${this.icon}" alt="page icon" />&nbsp;`;
+                return html`<img class="pf-icon" src="${this.icon}" alt="page icon" />`;
             }
             const icon = this.icon.replaceAll("fa://", "fa ");
-            return html`<i class=${icon}></i>&nbsp;`;
+            return html`<i class=${icon}></i>`;
         }
         return html``;
     }
@@ -147,8 +153,8 @@ export class PageHeader extends AKElement {
                 <section class="pf-c-page__main-section pf-m-light">
                     <div class="pf-c-content">
                         <h1>
-                            ${this.renderIcon()}
-                            <slot name="header"> ${this.header} </slot>
+                            <slot name="icon">${this.renderIcon()}</slot>&nbsp;
+                            <slot name="header">${this.header}</slot>
                         </h1>
                         ${this.description ? html`<p>${this.description}</p>` : html``}
                     </div>
@@ -164,7 +170,9 @@ export class PageHeader extends AKElement {
                         );
                     }}
                 >
-                    <i class="fas fa-code"></i>
+                    <pf-tooltip position="top" content=${msg("Open API drawer")}>
+                        <i class="fas fa-code"></i>
+                    </pf-tooltip>
                 </button>
                 <button
                     class="notification-trigger pf-c-button pf-m-plain ${this.hasNotifications
@@ -179,7 +187,9 @@ export class PageHeader extends AKElement {
                         );
                     }}
                 >
-                    <i class="fas fa-bell"></i>
+                    <pf-tooltip position="top" content=${msg("Open Notification drawer")}>
+                        <i class="fas fa-bell"></i>
+                    </pf-tooltip>
                 </button>
             </div>`;
     }

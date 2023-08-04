@@ -22,6 +22,7 @@ import "@goauthentik/elements/sidebar/Sidebar";
 import { DefaultTenant } from "@goauthentik/elements/sidebar/SidebarBrand";
 import "@goauthentik/elements/sidebar/SidebarItem";
 import { ROUTES } from "@goauthentik/user/Routes";
+import "@patternfly/elements/pf-tooltip/pf-tooltip.js";
 
 import { msg } from "@lit/localize";
 import { CSSResult, TemplateResult, css, html } from "lit";
@@ -73,11 +74,21 @@ export class UserInterface extends Interface {
                     z-index: auto !important;
                     background-color: transparent !important;
                 }
+                .pf-c-page__header {
+                    background-color: transparent !important;
+                    box-shadow: none !important;
+                    color: black !important;
+                }
+                :host([theme="dark"]) .pf-c-page__header {
+                    color: var(--ak-dark-foreground) !important;
+                }
+                .pf-c-page__header-tools-item .fas,
+                .pf-c-notification-badge__count,
+                .pf-c-page__header-tools-group .pf-c-button {
+                    color: var(--ak-global--Color--100) !important;
+                }
                 .pf-c-page {
                     background-color: transparent;
-                }
-                .background-wrapper {
-                    background-color: var(--pf-c-page--BackgroundColor) !important;
                 }
                 .display-none {
                     display: none;
@@ -96,6 +107,15 @@ export class UserInterface extends Interface {
                     z-index: -1;
                     top: 0;
                     left: 0;
+                    background-color: var(--pf-c-page--BackgroundColor) !important;
+                }
+                .background-default-slant {
+                    background-color: white; /*var(--ak-accent);*/
+                    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 5vw));
+                    height: 50vh;
+                }
+                :host([theme="dark"]) .background-default-slant {
+                    background-color: black;
                 }
                 ak-locale-context {
                     display: flex;
@@ -158,7 +178,11 @@ export class UserInterface extends Interface {
         return html` <ak-locale-context>
             <ak-enterprise-status interface="user"></ak-enterprise-status>
             <div class="pf-c-page">
-                <div class="background-wrapper" style="${this.uiConfig.theme.background}"></div>
+                <div class="background-wrapper" style="${this.uiConfig.theme.background}">
+                    ${this.uiConfig.theme.background === ""
+                        ? html`<div class="background-default-slant"></div>`
+                        : html``}
+                </div>
                 <header class="pf-c-page__header">
                     <div class="pf-c-page__header-brand">
                         <a href="#/" class="pf-c-page__header-brand-link">
@@ -188,7 +212,12 @@ export class UserInterface extends Interface {
                                               });
                                           }}
                                       >
-                                          <i class="fas fa-code" aria-hidden="true"></i>
+                                          <pf-tooltip
+                                              position="top"
+                                              content=${msg("Open API drawer")}
+                                          >
+                                              <i class="fas fa-code" aria-hidden="true"></i>
+                                          </pf-tooltip>
                                       </button>
                                   </div>`
                                 : html``}
@@ -215,7 +244,12 @@ export class UserInterface extends Interface {
                                                   ? "pf-m-unread"
                                                   : ""}"
                                           >
-                                              <i class="pf-icon-bell" aria-hidden="true"></i>
+                                              <pf-tooltip
+                                                  position="top"
+                                                  content=${msg("Open Notification drawer")}
+                                              >
+                                                  <i class="fas fa-bell" aria-hidden="true"></i>
+                                              </pf-tooltip>
                                               <span class="pf-c-notification-badge__count"
                                                   >${this.notificationsCount}</span
                                               >
@@ -230,7 +264,9 @@ export class UserInterface extends Interface {
                                           type="button"
                                           href="#/settings"
                                       >
-                                          <i class="fas fa-cog" aria-hidden="true"></i>
+                                          <pf-tooltip position="top" content=${msg("Settings")}>
+                                              <i class="fas fa-cog" aria-hidden="true"></i>
+                                          </pf-tooltip>
                                       </a>
                                   </div>`
                                 : html``}
@@ -239,12 +275,14 @@ export class UserInterface extends Interface {
                                     href="/flows/-/default/invalidation/"
                                     class="pf-c-button pf-m-plain"
                                 >
-                                    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                    <pf-tooltip position="top" content=${msg("Sign out")}>
+                                        <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+                                    </pf-tooltip>
                                 </a>
                             </div>
                             ${this.me.user.isSuperuser
                                 ? html`<a
-                                      class="pf-c-button pf-m-primary pf-m-small pf-u-display-none pf-u-display-block-on-md"
+                                      class="pf-c-button pf-m-secondary pf-m-small pf-u-display-none pf-u-display-block-on-md"
                                       href="/if/admin"
                                   >
                                       ${msg("Admin interface")}
