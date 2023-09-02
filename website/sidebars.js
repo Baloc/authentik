@@ -1,5 +1,11 @@
-module.exports = {
+const generateVersionDropdown =
+    require("./src/utils.js").generateVersionDropdown;
+
+const docsSidebar = {
     docs: [
+        {
+            type: "html",
+        },
         {
             type: "doc",
             id: "index",
@@ -26,7 +32,7 @@ module.exports = {
         {
             type: "category",
             label: "Core Concepts",
-            collapsed: false,
+            collapsed: true,
             items: [
                 "core/terminology",
                 "core/applications",
@@ -34,6 +40,20 @@ module.exports = {
                 "core/certificates",
                 "core/geoip",
                 "core/architecture",
+            ],
+        },
+        {
+            type: "category",
+            label: "Enterprise",
+            collapsed: true,
+            link: {
+                type: "doc",
+                id: "enterprise/index",
+            },
+            items: [
+                "enterprise/get-started",
+                "enterprise/manage-enterprise",
+                "enterprise/entsupport",
             ],
         },
         {
@@ -252,13 +272,14 @@ module.exports = {
                 description: "Release notes for recent authentik versions",
             },
             items: [
+                "releases/2023/v2023.8",
                 "releases/2023/v2023.6",
                 "releases/2023/v2023.5",
-                "releases/2023/v2023.4",
                 {
                     type: "category",
                     label: "Previous versions",
                     items: [
+                        "releases/2023/v2023.4",
                         "releases/2023/v2023.3",
                         "releases/2023/v2023.2",
                         "releases/2023/v2023.1",
@@ -341,6 +362,7 @@ module.exports = {
             },
             items: [
                 "security/policy",
+                "security/CVE-2023-39522",
                 "security/CVE-2023-36456",
                 "security/2023-06-cure53",
                 "security/CVE-2023-26481",
@@ -351,3 +373,6 @@ module.exports = {
         },
     ],
 };
+
+docsSidebar.docs[0].value = generateVersionDropdown(docsSidebar);
+module.exports = docsSidebar;

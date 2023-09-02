@@ -509,7 +509,6 @@ export class FlowExecutor extends Interface implements StageHost {
                                             ${this.renderChallengeWrapper()}
                                         </div>
                                         <footer class="pf-c-login__footer">
-                                            <p></p>
                                             <ul class="pf-c-list pf-m-inline">
                                                 ${this.tenant?.uiFooterLinks?.map((link) => {
                                                     return html`<li>
@@ -528,7 +527,7 @@ export class FlowExecutor extends Interface implements StageHost {
                                                     ? html`
                                                           <li>
                                                               <a
-                                                                  href="https://unsplash.com/@diegojimenez"
+                                                                  href="https://unsplash.com/@sgabriel"
                                                                   >${msg("Background image")}</a
                                                               >
                                                           </li>

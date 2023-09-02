@@ -1,5 +1,13 @@
+const docsSidebar = require("./sidebars.js");
+const generateVersionDropdown =
+    require("./src/utils.js").generateVersionDropdown;
+
 module.exports = {
     docs: [
+        {
+            type: "html",
+            value: generateVersionDropdown(docsSidebar),
+        },
         {
             type: "doc",
             id: "index",
@@ -72,6 +80,7 @@ module.exports = {
                     items: [
                         "docs/templates/procedural",
                         "docs/templates/conceptual",
+                        "docs/templates/reference",
                     ],
                 },
             ],
